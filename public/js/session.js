@@ -1,4 +1,3 @@
-
 function restartSession() {
   sendCommand("%reset -f");
   refreshVariables();
@@ -77,4 +76,8 @@ function run2ndToLastCommand() {
   jqconsole.Write(jqconsole.GetPromptText(true) + cmd + '\n');
   jqconsole.ClearPromptText();
   sendCommand(cmd);
+}
+
+function logout() {
+  window.location.href = "/logout";
 }

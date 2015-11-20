@@ -6,15 +6,16 @@ var fs = require('fs');
 var path = require('path');
 var http = require('http');
 var querystring = require('querystring');
-var ipc = require('ipc');
+var ipc = require('electron').ipcMain;
 
 var kernel = require('../rodeo/kernel');
+var md = require('../rodeo/md');
 var findFile = require('../rodeo/find-file');
 var preferences = require('../rodeo/preferences');
 
 global.python = null;
 global.USER_HOME = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
-global.USER_WD = '/Users/glamp/go/src/github.com/yhat/box/src/sciencebox/langs/tests'; //process.env.HOME;
+global.USER_WD = preferences.getPreferences().defaultWd || process.env.HOME;
 
 kernel(function(err, python) {
   global.python = python;
@@ -29,8 +30,6 @@ kernel(function(err, python) {
   mainWindow.webContents.send('refresh-packages');
   mainWindow.webContents.send('set-working-directory', global.USER_WD || '.');
 });
-
-
 
 // Report crashes to our server.
 require('crash-reporter').start();
@@ -59,11 +58,11 @@ app.on('ready', function() {
   mainWindow = new BrowserWindow({ width: size.width, height: size.height });
 
   // and load the index.html of the app.
-  mainWindow.loadUrl('file://' + __dirname + '/../../static/desktop-index.html');
+  mainWindow.loadURL('file://' + __dirname + '/../../static/desktop-index.html');
 
   mainWindow.webContents.on('did-finish-load', function() {
 
-    mainWindow.webContents.send('log', JSON.stringify(process.argv))
+    // mainWindow.webContents.send('log', JSON.stringify(process.argv))
     var wd;
     if (process.argv.length == 5) {
       wd = process.argv[4];
@@ -115,7 +114,6 @@ app.on('ready', function() {
       python.execute(data.command, data.autocomplete=="true" || data.autocomplete==true, function(result) {
         result.command = data.command;
         result.status = "complete";
-        // result = JSON.stringify(result);
         event.returnValue = result;
       });
     }
@@ -155,6 +153,25 @@ app.on('ready', function() {
     event.returnValue = USER_WD;
   });
 
+  ipc.on('md', function(event, data) {
+    md(data.doc, python, false, function(err, doc) {
+      event.returnValue = doc;
+    });
+  });
+
+  ipc.on('pdf', function(event, data) {
+    require('dialog').showSaveDialog({
+      title: 'Save Report',
+      default_path: USER_WD,
+    }, function(destfile) {
+      if (! /\.pdf/.test(destfile)) {
+        destfile += ".pdf";
+      }
+
+      mainWindow.webContents.send('pdf', destfile);
+    });
+  });
+
   ipc.on('file-get', function(event, filepath) {
     if (/^~/.test(filepath)) {
       filepath = filepath.replace("~", USER_HOME);
@@ -176,27 +193,50 @@ app.on('ready', function() {
     });
   });
 
+  ipc.on('update-and-restart', function() {
+    autoUpdater.quitAndInstall();
+  });
+
   // TODO: check for updates (i think i need to codesign?)
-  // var platform = os.platform() + '_' + os.arch();
-  // var version = app.getVersion();
-  // updateUrl = 'https://rodeo-nuts.herokuapp.com/update/'+platform+'/'+version;
-  //
-  // autoUpdater.on('error', function(err, msg) {
-  //   mainWindow.webContents.send('log', "[ERROR]: " + msg);
-  // });
-  // mainWindow.webContents.send('log', updateUrl);
-  // autoUpdater.setFeedUrl(updateUrl);
-  //
-  // autoUpdater.on('update-available', function(data) {
-  //   mainWindow.webContents.send('log', "UPDATE AVAILABLE");
-  //   mainWindow.webContents.send('log', data);
-  // });
-  // autoUpdater.on('update-not-available', function(data) {
-  //   mainWindow.webContents.send('log', "NO UPDATE AVAILABLE");
-  //   mainWindow.webContents.send('log', data);
-  // });
-  //
-  // autoUpdater.checkForUpdates();
+  var platform = os.platform() + '_' + os.arch();
+  var version = app.getVersion();
+  updateUrl = "http://localhost:3000/?" + "platform=" + platform + "&version=" + version;
+  updateUrl = "http://rodeo-updates.yhat.com?" + "platform=" + platform + "&version=" + version;
+
+  autoUpdater.on('error', function(err, msg) {
+    mainWindow.webContents.send('log', "[ERROR]: " + msg);
+  });
+
+  autoUpdater.on('update-available', function(data) {
+    mainWindow.webContents.send('log', "UPDATE AVAILABLE");
+    mainWindow.webContents.send('log', data);
+  });
+
+  autoUpdater.on('update-not-available', function(data) {
+    console.log("UPDATE NOT AVAILABLE")
+    // mainWindow.webContents.send('log', data);
+  });
+
+  autoUpdater.on('update-downloaded', function(evt, releaseNotes, releaseName, releaseDate, udpateURL) {
+    mainWindow.webContents.send('log', releaseNotes + '---' + releaseName + '---' + releaseDate + '---' + udpateURL);
+    mainWindow.webContents.send('update-ready', { platform: 'osx' });
+  });
+
+  setTimeout(function() {
+    if (/win32/.test(platform)) {
+      http.get(updateUrl, function(res) {
+        if (res.statusCode!=204) {
+          mainWindow.webContents.send('update-ready', { platform: 'windows' });
+        }
+      }).on('error', function(err) {
+        console.error("[ERROR]: could not check for windows update.");
+      });
+    } else {
+      autoUpdater.setFeedURL(updateUrl);
+      autoUpdater.checkForUpdates();
+    // mainWindow.webContents.send('log', updateUrl);
+    }
+  }, 2000);
 
   mainWindow.on('close', function() {
     mainWindow.webContents.send('kill');

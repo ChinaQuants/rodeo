@@ -1,3 +1,7 @@
+function isDesktop() {
+  return /^file:\/\//.test(window.location.href);
+}
+
 function updateRC(preferenceName, preferenceValue) {
   if (isDesktop()) {
     ipc.sendSync("preferences-post", { name: preferenceName, value: preferenceValue });
@@ -20,6 +24,10 @@ function pathJoin(parts){
   var separator = '/';
   var replace   = new RegExp(separator+'{1,}', 'g');
   return parts.join(separator).replace(replace, separator);
+}
+
+function pathBasename(path) {
+  return path.split(/[\\/]/).pop();
 }
 
 function guid() {

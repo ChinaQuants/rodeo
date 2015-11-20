@@ -160,10 +160,13 @@ function getRC(fn) {
   }
 }
 
+function showPreferences() {
+  $('a[href^="#preferences"]').click();
+}
+
 function setupPreferences() {
   getRC(function(rc) {
     configurePreferences(rc);
   });
 }
-setupPreferences();
-// setupWindows();
+

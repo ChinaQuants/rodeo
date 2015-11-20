@@ -7,6 +7,15 @@
   <script type="text/javascript">
     window.$ = window.jQuery = require('jquery');
   </script>
+  <script src="js/external.min.js"></script>
+  <script>
+  /* Replace 'APP_ID' with your app ID */
+  window.intercomSettings = {
+      app_id: 'x8kexgni'
+  };
+  /* Replace 'APP_ID' with your app ID */
+  (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/APP_ID';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()
+  </script>
 </head>
 <body>
   <!-- main section -->
@@ -16,7 +25,7 @@
         <div id="top-left">
           <!-- editors -->
           <div class="row">
-            <div class="col-sm-11" style="padding: 0px; margin: 0px; padding-left: 5px;">
+            <div class="col-sm-10" style="padding: 0px; margin: 0px; padding-left: 5px;">
               <ul id="editorsTab" class="nav nav-tabs">
                 <li>
                   <a href="#" onclick="shell.openExternal('http://yhat.com/');">
@@ -27,9 +36,14 @@
                 <li><a title="Create new file" href="#" id="add-tab"><i class="fa fa-plus-square-o"></i></a></li>
               </ul>
             </div>
-            <div class="col-sm-1" style="padding: 0px; margin: 0px;">
+            <div class="col-sm-2" style="padding: 0px; margin: 0px;">
               <ul class="nav nav-tabs">
-                <li><a title="Run script" id="run-button" href="#"><i class="fa fa-play-circle"></i></a></li>
+                <li>
+                  <a title="Run script" id="run-button" href="#"><i class="fa fa-play-circle"></i></a>
+                </li>
+                <li>
+                  <a title="Generate markdown report" id="run-markdown" href="#"><i class="fa fa-sticky-note-o"></i></a>
+                </li>
               </ul>
             </div>
           </div>
@@ -327,7 +341,7 @@
     <!-- Tour Display Modal -->
 
     <!-- hidden stuff -->
-    <input id="file-upload-trigger" type="file" style="visibility:hidden" />
+    <input id="file-upload-trigger" type="file" style="visibility:hidden; height: 0px;" />
   <script src="js/desktop-main.js"></script>
   <script src="../src/desktop/menu.js"></script>
   <script type="text/javascript">
@@ -336,6 +350,13 @@
       setTimeout(function() {
         $("#add-tab").click();
       }, 450);
+    });
+  </script>
+  <script type="text/javascript">
+    window.Intercom('boot', {
+      app_id: 'x8kexgni',
+      user_id: require('ipc').sendSync('preferences-get').id,
+      created_at: Date.now()
     });
   </script>
 </body>

@@ -93,7 +93,7 @@ var menuShortcutsTemplate = [
       },
       {
         label: 'Open',
-        accelerator: 'Shift+CmdOrCtrl+O',
+        accelerator: 'CmdOrCtrl+O',
         click: function() {
           track('shortcut', 'Open');
           openDialog();
@@ -127,8 +127,13 @@ var menuShortcutsTemplate = [
         click: function() {
           if (variableWindow && variableWindow.isFocused()) {
             variableWindow.close();
+            variableWindow = null;
           } else if (aboutWindow && aboutWindow.isFocused()) {
             aboutWindow.close();
+            aboutWindow = null;
+          } else if (markdownWindow && markdownWindow.isFocused()) {
+            markdownWindow.close();
+            markdownWindow = null;
           } else {
             if ($("#editorsTab .active").length) {
               var n = $("#editorsTab .active").attr("id").replace("editor-tab-", "");
@@ -246,7 +251,19 @@ var menuShortcutsTemplate = [
         accelerator: 'CmdOrCtrl+R',
         click: function() {
           track('shortcut', 'Reload');
-          remote.getCurrentWindow().reload();
+          remote.require('dialog').showMessageBox({
+            type: "warning",
+            buttons: ["Yes", "Cancel"],
+            message: "Reloading will restart your Rodeo session. Are you sure you want to continue?",
+            detail: "Any unsaved scripts and data will be deleted permanently."
+          }, function(reply) {
+            if (reply==0) {
+              remote.getCurrentWindow().reload();
+            } else {
+              // do nothing
+              return;
+            }
+          });
         }
       },
       { label: 'Toggle Dev Tools', accelerator: 'Alt+CmdOrCtrl+I', click: function() { remote.getCurrentWindow().toggleDevTools(); } },

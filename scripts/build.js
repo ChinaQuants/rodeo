@@ -30,6 +30,7 @@ var packagerOptions = {
     'node_modules/electron-compile/node_modules/electron-compilers',
     'node_modules_linux',
     'node_modules_osx',
+    'node_modules_ubuntu',
     'public',
     'marketing',
     'scripts',
@@ -41,7 +42,7 @@ var packagerOptions = {
 var tasks = [
   { platform: 'darwin', arch: 'x64', icon: 'app.icns' },
   { platform: 'win32', arch: 'all', icon: 'app.icns' },
-  { platform: 'linux', arch: 'all', icon: 'app.icns' }
+  //{ platform: 'linux', arch: 'x64', icon: 'app.icns' }
 ].map(function (item) {
   return _.assign({}, item, packagerOptions, {
     icon: path.join(resPath, item.icon),

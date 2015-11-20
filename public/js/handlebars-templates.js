@@ -1,13 +1,6 @@
 (function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
 templates['active-variable.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
-    var stack1, helper, options, buffer = 
-  "      <a target=_blank ";
-  stack1 = ((helper = (helper = helpers.isDesktop || (depth0 != null ? depth0.isDesktop : depth0)) != null ? helper : helpers.helperMissing),(options={"name":"isDesktop","hash":{},"fn":container.program(2, data, 0),"inverse":container.program(4, data, 0),"data":data}),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},options) : helper));
-  if (!helpers.isDesktop) { stack1 = helpers.blockHelperMissing.call(depth0,stack1,options)}
-  if (stack1 != null) { buffer += stack1; }
-  return buffer + "><span class='fa fa-list-alt' aria-hidden='true'></span></a>\n";
-},"2":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "onclick=\"showVariable('"
@@ -15,7 +8,7 @@ templates['active-variable.hbs'] = template({"1":function(container,depth0,helpe
     + "', '"
     + alias4(((helper = (helper = helpers.type || (depth0 != null ? depth0.type : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"type","hash":{},"data":data}) : helper)))
     + "');\"";
-},"4":function(container,depth0,helpers,partials,data) {
+},"3":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "href=\"variable?name="
@@ -23,29 +16,19 @@ templates['active-variable.hbs'] = template({"1":function(container,depth0,helpe
     + "&type="
     + alias4(((helper = (helper = helpers.type || (depth0 != null ? depth0.type : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"type","hash":{},"data":data}) : helper)))
     + "\"";
-},"6":function(container,depth0,helpers,partials,data) {
-    var stack1, helper, options, buffer = 
-  "      <a target=_blank ";
-  stack1 = ((helper = (helper = helpers.isDesktop || (depth0 != null ? depth0.isDesktop : depth0)) != null ? helper : helpers.helperMissing),(options={"name":"isDesktop","hash":{},"fn":container.program(2, data, 0),"inverse":container.program(4, data, 0),"data":data}),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},options) : helper));
-  if (!helpers.isDesktop) { stack1 = helpers.blockHelperMissing.call(depth0,stack1,options)}
-  if (stack1 != null) { buffer += stack1; }
-  return buffer + "><span class='fa fa-table' aria-hidden='true'></span></a>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
-
-  return "<tr>\n  <td>"
+    var stack1, helper, options, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression, buffer = 
+  "<tr>\n  <td>"
     + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
     + "</td>\n  <td>"
     + alias4(((helper = (helper = helpers.type || (depth0 != null ? depth0.type : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"type","hash":{},"data":data}) : helper)))
     + "</td>\n  <td>"
     + alias4(((helper = (helper = helpers.repr || (depth0 != null ? depth0.repr : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"repr","hash":{},"data":data}) : helper)))
-    + "</td>\n  <td style=\"td-align: center;\">\n"
-    + ((stack1 = (helpers.compare || (depth0 && depth0.compare) || alias2).call(alias1,(depth0 != null ? depth0.type : depth0),"list",{"name":"compare","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ((stack1 = (helpers.compare || (depth0 && depth0.compare) || alias2).call(alias1,(depth0 != null ? depth0.type : depth0),"ndarray",{"name":"compare","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ((stack1 = (helpers.compare || (depth0 && depth0.compare) || alias2).call(alias1,(depth0 != null ? depth0.type : depth0),"dict",{"name":"compare","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ((stack1 = (helpers.compare || (depth0 && depth0.compare) || alias2).call(alias1,(depth0 != null ? depth0.type : depth0),"DataFrame",{"name":"compare","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ((stack1 = (helpers.compare || (depth0 && depth0.compare) || alias2).call(alias1,(depth0 != null ? depth0.type : depth0),"Series",{"name":"compare","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "  </td>\n</tr>\n";
+    + "</td>\n  <td style=\"td-align: center;\">\n    <a target=_blank ";
+  stack1 = ((helper = (helper = helpers.isDesktop || (depth0 != null ? depth0.isDesktop : depth0)) != null ? helper : alias2),(options={"name":"isDesktop","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data}),(typeof helper === alias3 ? helper.call(alias1,options) : helper));
+  if (!helpers.isDesktop) { stack1 = helpers.blockHelperMissing.call(depth0,stack1,options)}
+  if (stack1 != null) { buffer += stack1; }
+  return buffer + "><span class='fa fa-list-alt' aria-hidden='true'></span></a>\n  </td>\n</tr>\n";
 },"useData":true});
 templates['editor-tab.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "active";
@@ -117,6 +100,27 @@ templates['history-row.hbs'] = template({"compiler":[7,">= 4.0.0"],"main":functi
   return "<p style=\"margin: 0px;\">\n  <span style=\"white-space: pre-wrap;\">"
     + container.escapeExpression(((helper = (helper = helpers.command || (depth0 != null ? depth0.command : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"command","hash":{},"data":data}) : helper)))
     + "</span>\n</p>\n";
+},"useData":true});
+templates['markdown-output.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "  <script type=\"text/javascript\">\n    window.$ = window.jQuery = require('jquery');\n  </script>\n";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "  <!-- start nav -->\n  <nav class=\"navbar navbar-default\" style=\"margin-bottom: 2px;\">\n    <div class=\"container-fluid\">\n      <div class=\"navbar-header\">\n        <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\">\n          <span class=\"sr-only\">Toggle navigation</span>\n          <span class=\"icon-bar\"></span>\n          <span class=\"icon-bar\"></span>\n          <span class=\"icon-bar\"></span>\n        </button>\n      </div>\n\n      <form id=\"pdf-form\" class=\"navbar-form navbar-right\" method=\"POST\" action=\"/pdf\" role=\"search\">\n        <div class=\"form-group\">\n          <input type=\"hidden\" id=\"pdf-html\" name=\"html\" value=\"\" />\n        </div>\n        <button type=\"submit\" id=\"pdf\" class=\"btn btn-primary\">Export as PDF</button>\n      </form>\n\n    </div>\n  </nav>\n";
+},"7":function(container,depth0,helpers,partials,data) {
+    return "  <script type=\"text/javascript\">\n    $(\"#pdf-form\").submit(function(e) {\n      e.preventDefault();\n      require('ipc').send('pdf', { html: $(\"#content\").html() });\n      return false;\n    });\n  </script>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : {};
+
+  return "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <title>Rodeo</title>\n  <link rel=\"stylesheet\" href=\"css/styles.css\" />\n  <link rel=\"stylesheet\" href=\"http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css\">\n  <script src=\"http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js\"></script>\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.desktop : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "  <script src=\"js/external.min.js\"></script>\n</head>\n<body>\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.desktop : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.program(5, data, 0),"data":data})) != null ? stack1 : "")
+    + "  <!-- end nav -->\n  <div id=\"content\" class=\"container\">\n    "
+    + ((stack1 = ((helper = (helper = helpers.renderedMarkdown || (depth0 != null ? depth0.renderedMarkdown : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"renderedMarkdown","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + "\n  </div>\n  <script type=\"text/javascript\" src=\"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML\"></script>\n  <script type=\"text/javascript\">\n    $(document).ready(function() {\n      $(\"#pdf-html\").val($(\"#content\").html());\n    });\n  </script>\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.desktop : depth0),{"name":"if","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "</body>\n";
 },"useData":true});
 templates['menu-item.hbs'] = template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, helper, options, buffer = "";
