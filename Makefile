@@ -68,6 +68,7 @@ static/js/server-main.js : $(JS_FILES)
 		public/js/windows/about.js \
 		public/js/windows/display-variable.js \
 		public/js/windows/sizing.js \
+		public/js/windows/startup-error.js \
 		public/js/main.js > static/js/server-main.js
 
 static/js/desktop-main.js : $(JS_FILES)
@@ -95,6 +96,7 @@ static/js/desktop-main.js : $(JS_FILES)
 		public/js/windows/display-variable.js \
 		public/js/windows/markdown.js \
 		public/js/windows/sizing.js \
+		public/js/windows/startup-error.js \
 		public/js/main.js > static/js/desktop-main.js
 
 static/js/ace.min.js : $(ACE_FILES)

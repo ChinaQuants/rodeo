@@ -20,9 +20,14 @@ function formatFilename(filename) {
 }
 
 function pathJoin(parts){
-  // TODO: handle windows
-  var separator = '/';
-  var replace   = new RegExp(separator+'{1,}', 'g');
+  // if windows, separator = '\\\\';
+  var separator;
+  if (navigator.platform=="Win32") {
+    separator = '\\\\';
+  } else {
+    separator = '/';
+  }
+  var replace = new RegExp(separator+'{1,}', 'g');
   return parts.join(separator).replace(replace, separator);
 }
 

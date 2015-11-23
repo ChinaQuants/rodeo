@@ -1,7 +1,7 @@
 {
   "name": "rodeo",
   "productName": "Rodeo",
-  "version": "1.1.8",
+  "version": "1.1.11",
   "appBundleId": "com.yhat.rodeo",
   "helperBundleId": "com.yhat.rodeo.helper",
   "description": "An IDE for data science.",
@@ -44,7 +44,6 @@
     "docopt": "^0.6.2",
     "express": "^4.13.3",
     "fs-extra": "^0.23.1",
-    "getmac": "^1.0.7",
     "handlebars": "^4.0.4",
     "highlight.js": "^8.9.1",
     "jade": "^1.11.0",

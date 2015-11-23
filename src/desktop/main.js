@@ -7,6 +7,7 @@ var path = require('path');
 var http = require('http');
 var querystring = require('querystring');
 var ipc = require('electron').ipcMain;
+var crashReporter = require('electron').crashReporter;
 
 var kernel = require('../rodeo/kernel');
 var md = require('../rodeo/md');
@@ -15,15 +16,20 @@ var preferences = require('../rodeo/preferences');
 
 global.python = null;
 global.USER_HOME = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
-global.USER_WD = preferences.getPreferences().defaultWd || process.env.HOME;
+global.USER_WD = preferences.getPreferences().defaultWd || USER_HOME;
 
 kernel(function(err, python) {
+
   global.python = python;
   if (err) {
     console.log("[ERROR]: " + err);
+    mainWindow.webContents.send("startup-error", err);
+    return;
   }
   if (python==null) {
     console.log("[ERROR]: python came back null");
+    mainWindow.webContents.send("startup-error", err);
+    return;
   }
 
   mainWindow.webContents.send('refresh-variables');
@@ -31,8 +37,12 @@ kernel(function(err, python) {
   mainWindow.webContents.send('set-working-directory', global.USER_WD || '.');
 });
 
-// Report crashes to our server.
-require('crash-reporter').start();
+crashReporter.start({
+  productName: 'Yhat Dev',
+  companyName: 'Yhat',
+  submitURL: 'http://rodeo-updates.yhat.com/crash',
+  autoSubmit: true
+});
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is GCed.
@@ -51,7 +61,6 @@ app.on('window-all-closed', function() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
-
   // Create the browser window.
   var atomScreen = require('screen');
   var size = atomScreen.getPrimaryDisplay().workAreaSize;
@@ -59,7 +68,7 @@ app.on('ready', function() {
 
   // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/../../static/desktop-index.html');
-
+  // mainWindow.openDevTools();
   mainWindow.webContents.on('did-finish-load', function() {
 
     // mainWindow.webContents.send('log', JSON.stringify(process.argv))
