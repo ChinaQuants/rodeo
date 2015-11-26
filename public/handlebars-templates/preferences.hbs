@@ -29,7 +29,7 @@
           Default Python Command
           <a data-toggle="tooltip" data-placement="right" title="<p class='small'>The <code>python</code> command that Rodeo will use. Some operating systems (OSX in particular) ship with multiple versions of Python installed. This can be confusing and it is sometimes difficult to determine which <code>python</code> is the 'right one'.</p>" data-html="true"><i class="fa fa-question-circle"></i></a>
         </label>
-        <input onchange="setPythonCmd($(this).val());" class="form-control" id="pythonCmd" name="pythonCmd" value="{{pythonCmd}}" placeholder="(i.e. /usr/local/bin/python or C:/Python27/python.exe)"/>
+        <input onchange="setPythonCmd($(this).val());" class="form-control" id="pythonCmd" name="pythonCmd" value="{{pythonCmd}}" placeholder="(i.e. /usr/local/bin/python or C:\\Python27\\python)"/>
       </div>
       <div class="form-group">
         <label for="defaultVariables">
@@ -37,6 +37,22 @@
           <a data-toggle="tooltip" data-placement="right" title="<p class='small'>Configure default variables that will be created when Rodeo is started. This is just a Python script that is executed on startup.</p>" data-html="true"><i class="fa fa-question-circle"></i></a>
         </label>
         <button class="btn btn-xs btn-primary" onclick="showRodeoProfile();">Configure</button>
+      </div>
+      <div class="form-group">
+        <div style="width:20%; max-width: 25%;">
+          <label for="fontType">Font Type</label>
+          <select onchange="setFontType($(this).val());" class="form-control" id="fontType" name="fontType" type="number" value="{{fontType}}" >
+              <option value="Consolas" {{#compare fontType Consolas}}selected{{/compare}}>Consolas</option>
+              <option value="Courier New" {{#compare fontType "Courier New"}}selected{{/compare}}>Courier New</option>
+              <option value="Georgia" {{#compare fontType Georgia}}selected{{/compare}}>Georgia</option>
+              <option value="Helvetica Neue" {{#compare fontType "Helvetica Neue"}}selected{{/compare}}>Helvetica Neue (default)</option>
+              <option value="Helvetica" {{#compare fontType "Helvetica"}}selected{{/compare}}>Helvetica</option>
+              <option value="Inconsolata" {{#compare fontType Inconsolata}}selected{{/compare}}>Inconsolata</option>
+              <option value="Menlo" {{#compare fontType Menlo}}selected{{/compare}}>Menlo</option>
+              <option value="Monaco" {{#compare fontType Monaco}}selected{{/compare}}>Monaco</option>
+              <option value="Open Sans" {{#compare fontType "Open Sans"}}selected{{/compare}}>Open Sans</option>
+          </select>
+        </div>
       </div>
       <div class="form-group">
         <div style="width:10%; max-width: 25%;">

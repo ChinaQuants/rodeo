@@ -8,6 +8,10 @@ ipc.on('refresh-packages', function() {
   refreshPackages();
 });
 
+ipc.on('setup-preferences', function() {
+  setupPreferences();
+});
+
 ipc.on('set-working-directory', function(wd) {
   setFiles(wd);
 });
@@ -34,6 +38,10 @@ ipc.on('file-index-complete', function() {
 
 ipc.on('log', function(data) {
   console.log("[LOG]: " + data.toString());
+});
+
+ipc.on('ready', function(data) {
+  $("#loading-modal").modal('hide');
 });
 
 ipc.on('no-update', function() {
