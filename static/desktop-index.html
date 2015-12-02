@@ -75,13 +75,18 @@
           </ul>
           <div id="myTabContent" class="tab-content">
             <div class="tab-pane active in top-right" id="environment">
+              <div class="row">
+                <div class="col-sm-5 col-sm-offset-7">
+                  <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                    <input type="text" class="form-control input-sm" id="variable-search" placeholder="filter..." />
+                  </div>
+                </div>
+              </div>
               <table class="table table-bordered" style="margin-bottom: 0px;">
                 <thead>
                   <tr id="vars-header">
                     <th>Variable</th>
-                    <th>Type&nbsp;
-                      <a data-toggle="tooltip" data-placement="bottom" title="<p class='small'>Currently supported data types:</p><ul class='small text-left'><li>dict</li><li>list</li><li>array (numpy)</li><li>DataFrame (pandas)</li><li>Series (pandas)</li></ul>" data-html="true"><i class="fa fa-question-circle"></i></a>
-                    </th>
                     <th></th>
                     <th></th>
                   </tr>
@@ -387,6 +392,10 @@
       app_id: 'x8kexgni',
       user_id: require('ipc').sendSync('preferences-get').id,
       created_at: Date.now()
+    });
+    window.Intercom('update',{
+      "pythonCmd": require('ipc').sendSync('preferences-get').pythonCmd,
+      "version": require('ipc').sendSync('preferences-get').version
     });
   </script>
 </body>

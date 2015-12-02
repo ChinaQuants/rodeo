@@ -1,6 +1,10 @@
 #!/bin/bash
 
-VERSION=$(cat package.json | jq -r .version)
+if [ "$1" == "rc" ]; then
+  VERSION="rc"
+else
+  VERSION=$(cat package.json | jq -r .version)
+fi
 
 echo "uploading OSX"
 if [ -f build/darwin/x64/Rodeo-darwin-x64/Rodeo.dmg ]; then
@@ -27,7 +31,6 @@ fi
 if [ -f build/win32/all/Rodeo-win32-x64/Rodeo\ Setup.exe ]; then
   s3cmd -P put build/win32/all/Rodeo-win32-x64/Rodeo\ Setup.exe "s3://rodeo-releases/${VERSION}/Rodeo-v${VERSION}-windows_64.exe"
 fi
-
 
 # echo "uploading Linux 64-bit"
 if [ -f build/linux/x64/Rodeo-linux-x64.zip ]; then

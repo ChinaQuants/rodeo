@@ -24,15 +24,29 @@ function setFontSize(fontSize) {
   var fontSizeInt = parseInt(fontSize);
   fontSize = Math.min(fontSizeInt, 22) + "px";
   $("body").css("font-size", fontSize);
+  $("#console pre").css("font-size", fontSize);
+  $(".editor").each(function(i, item) {
+    var editor = ace.edit(item.id);
+    editor.setFontSize(fontSize);
+  });
   updateRC("fontSize", fontSizeInt);
 }
 
 function setFontType(fontType) {
   $("body").css("font-family", fontType);
+  $("#console pre").css("font-family", fontType);
   $(".editor").each(function(i, item) {
     var editor = ace.edit(item.id);
     // TODO: not all fonts are available
-    // editor.setOption("fontFamily", fontType);
+    var validFonts = [
+      "Consolas",
+      "Courier New",
+      "Menlo",
+      "Monaco"
+    ];
+    if (validFonts.indexOf(fontType) > -1) {
+      editor.setOption("fontFamily", fontType);
+    }
   });
   updateRC("fontType", fontType);
 }
@@ -107,7 +121,9 @@ function resetWindowCalibration() {
 function showRodeoProfile() {
   // should do something special here...
   if (isDesktop()) {
-    openFile('~/.rodeoprofile');
+    var userHome = ipc.sendSync('home-get');
+    var profilePath = pathJoin([userHome, ".rodeoprofile"]);
+    openFile(profilePath);
   } else {
     $.get("profile", function(profile) {
       newEditor('.rodeoprofile', '~/.rodeoprofile', profile);

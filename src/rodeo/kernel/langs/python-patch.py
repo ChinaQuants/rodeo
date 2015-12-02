@@ -16,6 +16,8 @@ except:
     pip = None
 
 import ast
+import inspect
+import types
 import re
 
 def __is_code_finished(code):
@@ -35,7 +37,9 @@ def __get_variables(session):
         "dict": [],
         "ndarray": [],
         "DataFrame": [],
-        "Series": []
+        "Series": [],
+        "function": [],
+        "other": []
     }
 
     SPECIAL_VARS = ["In", "Out"]
@@ -46,22 +50,40 @@ def __get_variables(session):
 
         variable = session[variable_name]
 
-        if isinstance(variable, list):
+        if variable_name in ["get_ipython", "exit", "quit"]:
+            continue
+        elif isinstance(variable, types.ModuleType):
+            continue
+        elif isinstance(variable, list):
             variable_repr = "List of length %d" % len(variable)
             variables["list"].append({ "name": variable_name, "repr": variable_repr })
-        if np and isinstance(variable, np.ndarray):
+        elif np and isinstance(variable, np.ndarray):
             shape = " x ".join([str(i) for i in variable.shape])
             variable_repr = "Array [%s]" %  shape
             variables["ndarray"].append({ "name": variable_name, "repr": variable_repr })
-        if isinstance(variable, dict):
+        elif isinstance(variable, dict):
             variable_repr = "Dict with %d keys" % len(variable)
             variables["dict"].append({ "name": variable_name, "repr": variable_repr })
-        if pd and isinstance(variable, pd.DataFrame):
-            variable_repr = "[%d rows x %d cols]" % variable.shape
+        elif pd and isinstance(variable, pd.DataFrame):
+            variable_repr = "DataFrame [%d rows x %d cols]" % variable.shape
             variables["DataFrame"].append({ "name": variable_name, "repr": variable_repr })
-        if pd and isinstance(variable, pd.Series):
-            variable_repr = "[%d rows]" % variable.shape
+        elif pd and isinstance(variable, pd.Series):
+            variable_repr = "Series [%d rows]" % variable.shape
             variables["Series"].append({ "name": variable_name, "repr": variable_repr })
+        elif isinstance(variable, types.FunctionType):
+            args = inspect.getargspec(variable)
+            args = ", ".join(args.args)
+            if len(args) > 40:
+                args = args[:60] + "..."
+            variable_repr = "def %s(%s)" % (variable_name, args)
+            variables["function"].append({ "name": variable_name, "repr": variable_repr })
+        else:
+            variable_repr = str(type(variable))
+            v = { "name": variable_name, "repr": variable_repr }
+            variables["other"].append(v)
+
+    for key in variables:
+        variables[key] = sorted(variables[key], key=lambda x: "%s-%s" % (x['repr'], x['name']))
 
     print(json.dumps(variables))
 

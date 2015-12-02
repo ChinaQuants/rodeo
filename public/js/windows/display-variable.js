@@ -12,11 +12,17 @@ function showVariable(varname, type) {
     Series: "print(" + varname + "[:1000].to_frame().to_html())",
     list: "pp.pprint(" + varname + ")",
     ndarray: "pp.pprint(" + varname + ")",
-    dict: "pp.pprint(" + varname + ")"
+    dict: "pp.pprint(" + varname + ")",
+    "function": "print(inspect.getsource(" + varname + "))",
+    other: "pp.pprint(" + varname + ")"
   }
 
   variableWindow.webContents.on('dom-ready', function() {
-    executeCommand(show_var_statements[type], false, function(result) {
+    var showVar = show_var_statements[type];
+    if (! showVar) {
+      showVar = show_var_statements.other;
+    }
+    executeCommand(showVar, false, function(result) {
       variableWindow.webContents.send('ping', { type: type, html: result.output });
     });
   });
