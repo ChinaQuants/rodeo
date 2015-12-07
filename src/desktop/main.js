@@ -4,7 +4,7 @@ var BrowserWindow = require('browser-window');
 var os = require('os');
 var fs = require('fs');
 var path = require('path');
-var http = require('http');
+var https = require('https');
 var querystring = require('querystring');
 var ipc = require('electron').ipcMain;
 var crashReporter = require('electron').crashReporter;
@@ -22,7 +22,7 @@ global.USER_WD = preferences.getPreferences().defaultWd || USER_HOME;
 crashReporter.start({
   productName: 'Yhat Dev',
   companyName: 'Yhat',
-  submitURL: 'http://rodeo-updates.yhat.com/crash',
+  submitURL: 'https://rodeo-updates.yhat.com/crash',
   autoSubmit: true
 });
 
@@ -89,8 +89,8 @@ app.on('ready', function() {
       if (rc.version==null) {
         mainWindow.webContents.send('start-tour', { version: "first" });
         preferences.setPreferences("version", app.getVersion());
-      } else if (rc.version != app.getVersion()) {
-        mainWindow.webContents.send('start-tour', { version: app.getVersion() });
+      }
+      if (rc.version != app.getVersion()) {
         preferences.setPreferences("version", app.getVersion());
       }
     });
@@ -229,7 +229,7 @@ app.on('ready', function() {
     var platform = os.platform() + '_' + os.arch();
     var version = app.getVersion();
     updateUrl = "http://localhost:3000/?" + "platform=" + platform + "&version=" + version;
-    updateUrl = "http://rodeo-updates.yhat.com?" + "platform=" + platform + "&version=" + version;
+    updateUrl = "https://rodeo-updates.yhat.com?" + "platform=" + platform + "&version=" + version;
 
     autoUpdater.on('error', function(err, msg) {
       mainWindow.webContents.send('log', "[ERROR]: " + msg);
@@ -253,7 +253,7 @@ app.on('ready', function() {
 
     setTimeout(function() {
       if (/win32/.test(platform)) {
-        http.get(updateUrl, function(res) {
+        https.get(updateUrl, function(res) {
           if (res.statusCode!=204) {
             mainWindow.webContents.send('update-ready', { platform: 'windows' });
           }
